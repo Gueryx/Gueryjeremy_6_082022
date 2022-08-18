@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 // Model User
 const User = require('../models/User');
 
-// Fonction signup pour l'nregistrement d'un nouveau utilisateur
+// Fonction signup pour l'enregistrement d'un nouveau utilisateur
 exports.signup = (req, res, next) => {
     //hachage du mdp
     bcrypt.hash(req.body.password, 10)

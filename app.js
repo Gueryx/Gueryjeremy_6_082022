@@ -47,12 +47,13 @@ app.post('/api/sauces', (req, res, next) => {
 // Création d'article de sauce
 app.use('/api/sauces', (req, res, next) => {
     const sauces = [{
-        _id: 'SauceSpéciale',
-        title: 'La première sauce',
-        description: 'Les infos de la sauce en question',
-        imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-        price: 600,
         userId: 'Toto',
+        name: 'SceDallas',
+        manufacturer: 'Gueryx',
+        description: 'Les infos de la sauce en question',
+        mainPepper: 'Sel',
+        imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
+        heat: 6,
     }];
     res.status(200).json(sauces);
     next();

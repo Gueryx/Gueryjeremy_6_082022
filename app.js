@@ -11,6 +11,7 @@ const app = express();
 
 // Capture tout ce qui est en .json
 app.use(express.json());
+app.use(bodyParser.json());
 
 // Connexion à mongoDB
 mongoose.connect("mongodb+srv://Guery:pass123@cluster0.ir7i7su.mongodb.net/?retryWrites=true&w=majority", {
@@ -19,14 +20,6 @@ mongoose.connect("mongodb+srv://Guery:pass123@cluster0.ir7i7su.mongodb.net/?retr
     })
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
-
-app.post('/api/sauces', (req, res, next) => {
-    console.log(req.body);
-    res.status(201).json({
-        message: 'Objet créé'
-    });
-    next();
-});
 
 app.use((req, res, next) => {
     //Connexion pour tout le monde
@@ -38,8 +31,6 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(bodyParser.json());
-
 // Post/Ajout une sauce
 app.post('/api/sauces', (req, res, next) => {
     delete req.body._id;
@@ -49,6 +40,7 @@ app.post('/api/sauces', (req, res, next) => {
     thing.save()
         .then(() => res.status(201).json({ message: 'Objet enregistré' }))
         .catch(error => res.status(400).json({ error }));
+    next();
 });
 
 

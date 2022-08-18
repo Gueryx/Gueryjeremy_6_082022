@@ -23,6 +23,7 @@ exports.signup = (req, res, next) => {
                 .catch(error => res.status(500).json({ error }));
         })
         .catch(error => res.status(500).json({ error }));
+    next();
 };
 
 // Fonction login pour connecter les utilisateurs existant

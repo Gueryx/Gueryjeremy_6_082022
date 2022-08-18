@@ -28,7 +28,7 @@ app.post('/api/sauces', (req, res, next) => {
     next();
 });
 
-app.get((req, res, next) => {
+app.use((req, res, next) => {
     //Connexion pour tout le monde
     res.setHeader('Access-Control-Allow-Origin', '*');
     // Autorisation pour certains en-tête

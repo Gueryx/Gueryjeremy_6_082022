@@ -1,5 +1,7 @@
 // Package de cryptage des mdp by bcrypt
 const bcrypt = require('bcrypt');
+// Package jsonwebtoken
+const jwt = require('jsonwebtoken');
 
 // Model User
 const User = require('../models/User');
@@ -37,7 +39,9 @@ exports.login = (req, res, next) => {
                         } else {
                             res.status(200).json({
                                 userId: user._id,
-                                token: 'TOKEN'
+                                token: jwt.sign({ userId: user._id },
+                                    'RANDOM_TOKEN_SECRET', { expiresIn: '24h' }
+                                )
                             });
                         }
                     })

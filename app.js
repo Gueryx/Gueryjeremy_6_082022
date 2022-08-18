@@ -1,7 +1,9 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 // Importations
+const Thing = require('./models/Thing');
 const userRoutes = require('./routes/user');
 
 // Création application express
@@ -36,9 +38,22 @@ app.get((req, res, next) => {
     next();
 });
 
+app.use(bodyParser.json());
+
+// Post/Ajout une sauce
+app.post('/api/sauces', (req, res, next) => {
+    delete req.body._id;
+    const thing = new Thing({
+        ...req.body
+    });
+    thing.save()
+        .then(() => res.status(201).json({ message: 'Objet enregistré' }))
+        .catch(error => res.status(400).json({ error }));
+});
+
 
 // Création d'article de sauce
-app.use((req, res, next) => {
+app.use('/api/sauces', (req, res, next) => {
     const sauces = [{
         _id: 'SauceSpéciale',
         title: 'La première sauce',

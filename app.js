@@ -1,3 +1,4 @@
+// Connexions
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -42,7 +43,6 @@ app.post('/api/sauces', (req, res, next) => {
         .catch(error => res.status(400).json({ error }));
     next();
 });
-
 
 // Création d'article de sauce
 app.use('/api/sauces', (req, res, next) => {

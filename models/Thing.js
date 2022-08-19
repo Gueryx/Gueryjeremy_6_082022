@@ -1,3 +1,4 @@
+// Connexion à mongoose
 const mongoose = require('mongoose');
 
 // Création d'un schéma de données

@@ -1,6 +1,6 @@
-// Package de cryptage des mdp by bcrypt
+// Connexion au package de cryptage des mdp by bcrypt
 const bcrypt = require('bcrypt');
-// Package jsonwebtoken
+// Connexion au package jsonwebtoken
 const jwt = require('jsonwebtoken');
 
 // Model User
@@ -50,4 +50,5 @@ exports.login = (req, res, next) => {
             }
         })
         .catch(error => res.status(500).json({ error }));
+    next();
 };

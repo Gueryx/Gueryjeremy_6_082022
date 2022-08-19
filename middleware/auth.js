@@ -1,5 +1,5 @@
+// Connexion au plugin jsonwebtoken
 const jwt = require('jsonwebtoken');
-
 
 // Récupération du TOKEN
 module.exports = (req, res, next) => {

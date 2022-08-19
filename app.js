@@ -22,6 +22,7 @@ mongoose.connect("mongodb+srv://Guery:pass123@cluster0.ir7i7su.mongodb.net/?retr
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
+// Les autorisations de applications
 app.use((req, res, next) => {
     //Connexion pour tout le monde
     res.setHeader('Access-Control-Allow-Origin', '*');

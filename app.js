@@ -1,7 +1,7 @@
 // Connexions
 const express = require('express');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const auth = require('./middleware/auth');
 
 // Importations
 const Thing = require('./models/Thing');
@@ -12,7 +12,6 @@ const app = express();
 
 // Capture tout ce qui est en .json
 app.use(express.json());
-app.use(bodyParser.json());
 
 // Connexion à mongoDB
 mongoose.connect("mongodb+srv://Guery:pass123@cluster0.ir7i7su.mongodb.net/?retryWrites=true&w=majority", {
@@ -22,7 +21,7 @@ mongoose.connect("mongodb+srv://Guery:pass123@cluster0.ir7i7su.mongodb.net/?retr
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
-// Les autorisations de applications
+// Les autorisations de application
 app.use((req, res, next) => {
     //Connexion pour tout le monde
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -33,8 +32,8 @@ app.use((req, res, next) => {
     next();
 });
 
-// Post/Ajout une sauce
-app.post('/api/sauces', (req, res, next) => {
+// Post/Ajout une sauce 
+app.post('/api/sauces', auth, (req, res) => {
     delete req.body._id;
     const thing = new Thing({
         ...req.body
@@ -42,11 +41,10 @@ app.post('/api/sauces', (req, res, next) => {
     thing.save()
         .then(() => res.status(201).json({ message: 'Objet enregistré' }))
         .catch(error => res.status(400).json({ error }));
-    next();
 });
 
 // Création d'article de sauce
-app.use('/api/sauces', (req, res, next) => {
+app.get('/api/sauces', auth, (req, res) => {
     const sauces = [{
         userId: 'Toto',
         name: 'SceDallas',
@@ -57,7 +55,6 @@ app.use('/api/sauces', (req, res, next) => {
         heat: 6,
     }];
     res.status(200).json(sauces);
-    next();
 });
 
 // Enregistrement des routes

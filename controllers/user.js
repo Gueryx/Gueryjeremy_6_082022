@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 // Fonction signup pour l'enregistrement d'un nouveau utilisateur
-exports.signup = (req, res, next) => {
+exports.signup = (req, res) => {
     //hachage du mdp
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
@@ -23,11 +23,11 @@ exports.signup = (req, res, next) => {
                 .catch(error => res.status(500).json({ error }));
         })
         .catch(error => res.status(500).json({ error }));
-    next();
 };
 
 // Fonction login pour connecter les utilisateurs existant
-exports.login = (req, res, next) => {
+exports.login = (req, res) => {
+    console.log('test');
     User.findOne({ email: req.body.email })
         .then(user => {
             if (user === null) {
@@ -50,5 +50,4 @@ exports.login = (req, res, next) => {
             }
         })
         .catch(error => res.status(500).json({ error }));
-    next();
 };

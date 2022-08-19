@@ -52,7 +52,7 @@ app.use('/api/sauces', (req, res, next) => {
         manufacturer: 'Gueryx',
         description: 'Les infos de la sauce en question',
         mainPepper: 'Sel',
-        imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
+        imageUrl: 'https://i.ibb.co/dMVVsHY/t-l-chargement.jpg',
         heat: 6,
     }];
     res.status(200).json(sauces);

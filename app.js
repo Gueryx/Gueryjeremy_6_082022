@@ -46,6 +46,14 @@ app.post('/api/sauces', auth, (req, res) => {
         .catch(error => res.status(400).json({ error }));
 });
 
+// Put pour la modification d'un produit
+app.put('/api/sauces/:id', auth, (req, res, next) => {
+    Thing.updateOne({ _id: req.params.id }, {...req.body, _id: req.params.id })
+        .then(() => res.status(200).json({ message: 'Objet modifié.' }))
+        .catch(error => res.status(400).json({ error }));
+})
+
+// La route pour trouver un seul objet par son id
 app.get('/api/sauces/:id', (req, res, next) => {
     Thing.findOne({ _id: req.params.id })
         .then(sauce => res.status(200).json(sauce))
@@ -55,7 +63,7 @@ app.get('/api/sauces/:id', (req, res, next) => {
 // Création d'article de sauce
 app.get('/api/sauces', auth, (req, res) => {
     Thing.find()
-        .then(sauces => res.status(200).json(sauces))
+        .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(400).json({ error }));
 });
 

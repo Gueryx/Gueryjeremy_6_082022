@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const auth = require('./middleware/auth');
 
 // Importations
-const Thing = require('./models/Thing');
+const sauceRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 
 // Création application express
@@ -32,50 +32,10 @@ app.use((req, res, next) => {
     next();
 });
 
-// Post/Ajout une sauce 
-app.post('/api/sauces', auth, (req, res) => {
-    // Retire le champ _id généré par mongoDB avant de copier l'objet
-    delete req.body._id;
-    const sauce = new Thing({
-        // Récupération des informations
-        ...req.body
-    });
-    // Enregistrer l'objet dans la base de donnée
-    sauce.save()
-        .then(() => res.status(201).json({ message: 'Objet enregistré' }))
-        .catch(error => res.status(400).json({ error }));
-});
-
-// Put pour la modification d'un produit
-app.put('/api/sauces/:id', auth, (req, res, next) => {
-    Thing.updateOne({ _id: req.params.id }, {...req.body, _id: req.params.id })
-        .then(() => res.status(200).json({ message: 'Objet modifié.' }))
-        .catch(error => res.status(400).json({ error }));
-});
-
-// La route pour trouver un seul objet par son id
-app.get('/api/sauces/:id', (req, res, next) => {
-    Thing.findOne({ _id: req.params.id })
-        .then(sauce => res.status(200).json(sauce))
-        .catch(error => res.status(404).json({ error }));
-});
-
-// Création d'article de sauce
-app.get('/api/sauces', auth, (req, res) => {
-    Thing.find()
-        .then(sauce => res.status(200).json(sauce))
-        .catch(error => res.status(400).json({ error }));
-});
-
-// Suppression d'un produit
-app.delete('/api/sauces/;id', auth, (req, res, next) => {
-    sauce.deleteOne({ _id: req.params.id })
-        .then(() => res.status(200).json({ message: 'Objet supprimé.' }))
-        .catch(error => res.status(400).json({ error }));
-});
 
 // Enregistrement des routes
 app.use('/api/auth', userRoutes);
+app.use('/api/sauces', sauceRoutes);
 
 // Exporter cette application
 module.exports = app;

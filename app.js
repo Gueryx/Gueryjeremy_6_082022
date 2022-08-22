@@ -34,27 +34,29 @@ app.use((req, res, next) => {
 
 // Post/Ajout une sauce 
 app.post('/api/sauces', auth, (req, res) => {
+    // Retire le champ _id généré par mongoDB avant de copier l'objet
     delete req.body._id;
-    const thing = new Thing({
+    const sauce = new Thing({
+        // Récupération des informations
         ...req.body
     });
-    thing.save()
+    // Enregistrer l'objet dans la base de donnée
+    sauce.save()
         .then(() => res.status(201).json({ message: 'Objet enregistré' }))
         .catch(error => res.status(400).json({ error }));
 });
 
+app.get('/api/sauces/:id', (req, res, next) => {
+    Thing.findOne({ _id: req.params.id })
+        .then(sauce => res.status(200).json(sauce))
+        .catch(error => res.status(404).json({ error }));
+});
+
 // Création d'article de sauce
 app.get('/api/sauces', auth, (req, res) => {
-    const sauces = [{
-        userId: 'Toto',
-        name: 'SceDallas',
-        manufacturer: 'Gueryx',
-        description: 'Les infos de la sauce en question',
-        mainPepper: 'Sel',
-        imageUrl: 'https://i.ibb.co/dMVVsHY/t-l-chargement.jpg',
-        heat: 6,
-    }];
-    res.status(200).json(sauces);
+    Thing.find()
+        .then(sauces => res.status(200).json(sauces))
+        .catch(error => res.status(400).json({ error }));
 });
 
 // Enregistrement des routes

@@ -27,7 +27,6 @@ exports.signup = (req, res) => {
 
 // Fonction login pour connecter les utilisateurs existant
 exports.login = (req, res) => {
-    console.log('test');
     User.findOne({ email: req.body.email })
         .then(user => {
             if (user === null) {

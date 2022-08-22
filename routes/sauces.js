@@ -2,14 +2,15 @@
 const express = require('express');
 const auth = require('auth');
 const router = express.Router();
+const multer = require('../middleware/multer-config');
 
 // Importations
 const saucesCtrl = require('../controllers/sauces');
 
 router.get('/', auth, saucesCtrl.getAllStuff);
-router.post('/', auth, saucesCtrl.createThing);
+router.post('/', auth, multer, saucesCtrl.createThing);
 router.get('/:id', auth, saucesCtrl.getOneThing);
-router.put('/:id', auth, saucesCtrl.modifyThing);
+router.put('/:id', auth, multer, saucesCtrl.modifyThing);
 router.delete('/:id', auth, saucesCtrl.deleteThing);
 
 // Route Ctrl pour Post/Ajout une sauce 

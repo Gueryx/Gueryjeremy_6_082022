@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const auth = require('./middleware/auth');
+const path = require('path');
 
 // Importations
 const sauceRoutes = require('./routes/sauces');
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 // Enregistrement des routes
 app.use('/api/auth', userRoutes);
 app.use('/api/sauces', sauceRoutes);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Exporter cette application
 module.exports = app;

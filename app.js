@@ -51,7 +51,7 @@ app.put('/api/sauces/:id', auth, (req, res, next) => {
     Thing.updateOne({ _id: req.params.id }, {...req.body, _id: req.params.id })
         .then(() => res.status(200).json({ message: 'Objet modifié.' }))
         .catch(error => res.status(400).json({ error }));
-})
+});
 
 // La route pour trouver un seul objet par son id
 app.get('/api/sauces/:id', (req, res, next) => {
@@ -64,6 +64,13 @@ app.get('/api/sauces/:id', (req, res, next) => {
 app.get('/api/sauces', auth, (req, res) => {
     Thing.find()
         .then(sauce => res.status(200).json(sauce))
+        .catch(error => res.status(400).json({ error }));
+});
+
+// Suppression d'un produit
+app.delete('/api/sauces/;id', auth, (req, res, next) => {
+    sauce.deleteOne({ _id: req.params.id })
+        .then(() => res.status(200).json({ message: 'Objet supprimé.' }))
         .catch(error => res.status(400).json({ error }));
 });
 

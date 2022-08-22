@@ -15,7 +15,7 @@ exports.signup = (req, res) => {
                 email: req.body.email,
                 password: hash
             });
-            // Enregistrement de l'utilisateur dans la base de donée
+            // Enregistrement de l'utilisateur dans la base de donnée
             user.save()
                 // Code 201 création de ressource
                 .then(() => res.status(201).json({ message: 'Utilisateur créé.' }))

@@ -1,7 +1,6 @@
 // Connexions
 const express = require('express');
 const mongoose = require('mongoose');
-const auth = require('./middleware/auth');
 const path = require('path');
 
 // Importations
@@ -37,6 +36,8 @@ app.use((req, res, next) => {
 // Enregistrement des routes
 app.use('/api/auth', userRoutes);
 app.use('/api/sauces', sauceRoutes);
+
+// Gestion de la ressource d'image de façon statique
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // Exporter cette application

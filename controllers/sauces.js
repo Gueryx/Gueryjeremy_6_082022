@@ -1,6 +1,4 @@
-const { json } = require('body-parser');
-const Thing = require('../models/Thing');
-const sauce = require('../models/Thing');
+const Sauce = require('../models/Thing');
 const fs = require('fs');
 
 // Creation d'un produit
@@ -10,14 +8,14 @@ exports.createThing = (req, res) => {
     // Id valide
     delete thingObject._id;
     delete thingObject._userId;
-    const thing = new sauce({
+    const sauce = new Sauce({
         ...thingObject,
         userId: req.auth.userId,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
 
-    thing.save()
-        .then(() => { res.status(201).json({ message: 'Objet enregistré.' }) })
+    sauce.save()
+        .then((sauce) => { res.status(201).json({ sauce }) })
         .catch(error => { res.status(400).json({ error }) });
 };
 
@@ -47,14 +45,14 @@ exports.modifyThing = (req, res) => {
 // Supression d'un produit
 exports.deleteThing = (req, res) => {
     // Vérification des droits
-    Thing.findOne({ _id: req.params.id })
+    Sauce.findOne({ _id: req.params.id })
         .then(sauce => {
             if (sauce.userId != req.auth.userId) {
                 res.status(401).json({ message: 'Non-autorisé.' });
             } else {
                 const filename = sauce.imageUrl.split('/images')[1];
                 fs.unlink(`images/${filename}`, () => {
-                    Thing.deleteOne({ _id: req.params.id })
+                    Sauce.deleteOne({ _id: req.params.id })
                         .then(() => { res.status(200).json({ message: 'Objet supprimé.' }) })
                         .catch(error => res.status(401).json({ error }));
                 });
@@ -65,14 +63,14 @@ exports.deleteThing = (req, res) => {
 
 // Un produit en particulier
 exports.getOneThing = (req, res) => {
-    Thing.findOne({ _id: req.params.id })
+    Sauce.findOne({ _id: req.params.id })
         .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(404).json({ error }));
 };
 
 // Tout les produits
 exports.getAllThings = (req, res) => {
-    Thing.find()
+    Sauce.find()
         .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(400).json({ error }));
 };

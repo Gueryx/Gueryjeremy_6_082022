@@ -1,6 +1,7 @@
 const { json } = require('body-parser');
 const Thing = require('../models/Thing');
 const sauce = require('../models/Thing');
+const fs = require('fs');
 
 // Creation d'un produit
 exports.createThing = (req, res) => {
@@ -45,9 +46,21 @@ exports.modifyThing = (req, res) => {
 
 // Supression d'un produit
 exports.deleteThing = (req, res) => {
-    Thing.deleteOne({ _id: req.params.id })
-        .then(() => res.status(200).json({ message: 'Objet supprimé.' }))
-        .catch(error => res.status(400).json({ error }));
+    // Vérification des droits
+    Thing.findOne({ _id: req.params.id })
+        .then(sauce => {
+            if (sauce.userId != req.auth.userId) {
+                res.status(401).json({ message: 'Non-autorisé.' });
+            } else {
+                const filename = sauce.imageUrl.split('/images')[1];
+                fs.unlink(`images/${filename}`, () => {
+                    Thing.deleteOne({ _id: req.params.id })
+                        .then(() => { res.status(200).json({ message: 'Objet supprimé.' }) })
+                        .catch(error => res.status(401).json({ error }));
+                });
+            }
+        })
+        .catch((error) => req.status(500).json({ error }));
 };
 
 // Un produit en particulier

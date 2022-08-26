@@ -20,7 +20,7 @@ router.post('/', auth, saucesCtrl.createThing);
 router.put('/:id', auth, saucesCtrl.modifyThing);
 
 // Route pour trouver un seul objet par son id
-router.get('/:id', saucesCtrl.getOneThing);
+router.get('/:id', auth, saucesCtrl.getOneThing);
 
 // Route pour avoir tout les produits
 router.get('/', auth, saucesCtrl.getAllThings);

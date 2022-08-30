@@ -6,6 +6,7 @@ const router = express.Router();
 const saucesCtrl = require('../controllers/sauces');
 const multer = require('../middleware/multer-config');
 const auth = require('../middleware/auth');
+const like = require('../controllers/like');
 
 // Route Ctrl pour Post/Ajout une sauce 
 router.post('/', auth, multer, saucesCtrl.createThing);
@@ -21,6 +22,9 @@ router.get('/', auth, saucesCtrl.getAllThings);
 
 // Route pour la suppression d'un produit
 router.delete('/:id', auth, saucesCtrl.deleteThing);
+
+// Route pour les liked un produit
+router.post('/:id/like', auth, like.likeThing);
 
 
 module.exports = router;

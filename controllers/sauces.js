@@ -133,6 +133,6 @@ exports.likeThing = (req, res) => {
                 .catch(error => res.status(400).json({ error }));
             break;
         default:
-            console.error("bad request");
+            console.log("bad request");
     }
 };

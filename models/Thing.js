@@ -12,8 +12,8 @@ const thingSchema = mongoose.Schema({
     heat: { type: Number, required: true, min: "1", max: "10" },
     likes: { type: Number, defaut: 0 },
     dislikes: { type: Number, defaut: 0 },
-    usersLiked: { type: Array },
-    usersDisliked: { type: Array },
+    usersLiked: { type: Array, required: false },
+    usersDisliked: { type: Array, required: false },
 });
 
 //Exporter le model 

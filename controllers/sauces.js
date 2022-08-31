@@ -11,7 +11,11 @@ exports.createThing = (req, res) => {
     const sauce = new Sauce({
         ...thingObject,
         userId: req.auth.userId,
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        likes: 0,
+        dislikes: 0,
+        usersLiked: [],
+        usersDisliked: []
     });
     sauce.save()
         .then(sauce => res.status(201).json({ sauce }))
@@ -35,10 +39,10 @@ exports.modifyThing = (req, res) => {
             } else {
                 Sauce.updateOne({ _id: req.params.id }, {...thingObject, _id: req.params.id })
                     .then(() => res.status(200).json({ message: 'Objet modifié.' }))
-                    .catch(error => req.status(401).json({ error }));
+                    .catch(error => res.status(401).json({ error }));
             }
         })
-        .catch(error => req.status(400).json({ error }));
+        .catch(error => res.status(400).json({ error }));
 };
 
 // Supression d'un produit
@@ -57,7 +61,7 @@ exports.deleteThing = (req, res) => {
                 });
             }
         })
-        .catch(error => req.status(500).json({ error }));
+        .catch(error => res.status(500).json({ error }));
 };
 
 // Un produit en particulier

@@ -14,8 +14,8 @@ exports.createThing = (req, res) => {
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
     sauce.save()
-        .then((sauce) => { res.status(201).json({ sauce }) })
-        .catch(error => { res.status(400).json({ error }) });
+        .then(sauce => res.status(201).json({ sauce }))
+        .catch(error => res.status(400).json({ error }));
 };
 
 // Modification d'un produit
@@ -35,10 +35,10 @@ exports.modifyThing = (req, res) => {
             } else {
                 Sauce.updateOne({ _id: req.params.id }, {...thingObject, _id: req.params.id })
                     .then(() => res.status(200).json({ message: 'Objet modifié.' }))
-                    .catch((error) => req.status(401).json({ error }));
+                    .catch(error => req.status(401).json({ error }));
             }
         })
-        .catch((error) => req.status(400).json({ error }));
+        .catch(error => req.status(400).json({ error }));
 };
 
 // Supression d'un produit
@@ -52,12 +52,12 @@ exports.deleteThing = (req, res) => {
                 const filename = sauce.imageUrl.split('/images')[1];
                 fs.unlink(`images/${filename}`, () => {
                     Sauce.deleteOne({ _id: req.params.id })
-                        .then(() => { res.status(200).json({ message: 'Objet supprimé.' }) })
+                        .then(() => res.status(200).json({ message: 'Objet supprimé.' }))
                         .catch(error => res.status(401).json({ error }));
                 });
             }
         })
-        .catch((error) => req.status(500).json({ error }));
+        .catch(error => req.status(500).json({ error }));
 };
 
 // Un produit en particulier
@@ -93,8 +93,8 @@ exports.likeThing = (req, res) => {
                                 // Suppression de l'utilisateur dans le tableau
                                 $pull: { usersLiked: req.body.userId }
                             })
-                            .then(() => { res.status(201).json({ message: "Vote OK." }); })
-                            .catch((error) => { res.status(400).json({ error }); });
+                            .then(() => res.status(201).json({ message: "Vote OK." }))
+                            .catch(error => res.status(400).json({ error }));
                     }
 
                     // Idem pour le tableau usersDisliked
@@ -103,11 +103,11 @@ exports.likeThing = (req, res) => {
                                 $inc: { dislikes: -1 },
                                 $pull: { usersDisliked: req.body.userId }
                             })
-                            .then(() => { res.status(201).json({ message: "Vote OK." }); })
-                            .catch((error) => { res.status(400).json({ error }); });
+                            .then(() => res.status(201).json({ message: "Vote OK." }))
+                            .catch(error => res.status(400).json({ error }));
                     }
                 })
-                .catch((error) => { res.status(404).json({ error }); });
+                .catch(error => res.status(404).json({ error }));
             break;
 
             // Le cas où req.body.like = 1
@@ -119,8 +119,8 @@ exports.likeThing = (req, res) => {
                     // On ajoute l'utilisateur dans le array usersLiked
                     $push: { usersLiked: req.body.userId }
                 })
-                .then(() => { res.status(201).json({ message: "Vote OK." }); }) // Code 201: created
-                .catch((error) => { res.status(400).json({ error }); }); // Code 400: bad request
+                .then(() => res.status(201).json({ message: "Vote OK." })) // Code 201: created
+                .catch(error => res.status(400).json({ error })); // Code 400: bad request
             break;
 
             // le cas où req.body.like = -1
@@ -129,8 +129,8 @@ exports.likeThing = (req, res) => {
                     $inc: { dislikes: 1 },
                     $push: { usersDisliked: req.body.userId }
                 })
-                .then(() => { res.status(201).json({ message: "Vote OK." }); })
-                .catch((error) => { res.status(400).json({ error }); });
+                .then(() => res.status(201).json({ message: "Vote OK." }))
+                .catch(error => res.status(400).json({ error }));
             break;
         default:
             console.error("bad request");

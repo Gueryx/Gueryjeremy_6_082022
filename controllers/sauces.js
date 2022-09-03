@@ -1,15 +1,15 @@
-const Sauce = require('../models/Thing');
+const Sauce = require('../models/Sauce');
 const fs = require('fs');
 
 // Creation d'un produit
-exports.createThing = (req, res) => {
+exports.createSauce = (req, res) => {
     // parsé l'objet
-    const thingObject = JSON.parse(req.body.sauce);
+    const sauceObject = JSON.parse(req.body.sauce);
     // Id valide
-    delete thingObject._id;
-    delete thingObject._userId;
+    delete sauceObject._id;
+    delete sauceObject._userId;
     const sauce = new Sauce({
-        ...thingObject,
+        ...sauceObject,
         userId: req.auth.userId,
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
         likes: 0,
@@ -23,21 +23,21 @@ exports.createThing = (req, res) => {
 };
 
 // Modification d'un produit
-exports.modifyThing = (req, res) => {
-    const thingObject = req.file ? {
+exports.modifySauce = (req, res) => {
+    const sauceObject = req.file ? {
         ...JSON.parse(req.body.sauce),
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : {...req.body };
 
     // Mesure de sécurité, assignation de l'Id
-    delete thingObject._userId;
+    delete sauceObject._userId;
     // Récupération du bon id et la vérifier
     Sauce.findOne({ _id: req.params.id })
         .then((sauce) => {
             if (sauce.userId != req.auth.userId) {
                 res.status(400).json({ message: 'Non-autorisé.' });
             } else {
-                Sauce.updateOne({ _id: req.params.id }, {...thingObject, _id: req.params.id })
+                Sauce.updateOne({ _id: req.params.id }, {...sauceObject, _id: req.params.id })
                     .then(() => res.status(200).json({ message: 'Objet modifié.' }))
                     .catch(error => res.status(401).json({ error }));
             }
@@ -46,7 +46,7 @@ exports.modifyThing = (req, res) => {
 };
 
 // Supression d'un produit
-exports.deleteThing = (req, res) => {
+exports.deleteSauce = (req, res) => {
     // Vérification des droits
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => {
@@ -65,14 +65,14 @@ exports.deleteThing = (req, res) => {
 };
 
 // Un produit en particulier
-exports.getOneThing = (req, res) => {
+exports.getOneSauce = (req, res) => {
     Sauce.findOne({ _id: req.params.id })
         .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(404).json({ error }));
 };
 
 // Tout les produits
-exports.getAllThings = (req, res) => {
+exports.getAllSauce = (req, res) => {
     Sauce.find()
         .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(400).json({ error }));
@@ -80,7 +80,7 @@ exports.getAllThings = (req, res) => {
 
 // Liked / Disliked
 // 3 conditions possible via le frontend: 0, 1 ou -1 de req.body.like
-exports.likeThing = (req, res) => {
+exports.likeSauce = (req, res) => {
     switch (req.body.like) {
 
         // Le cas où req.body.like = 0

@@ -1,12 +1,14 @@
+// Connexion
 const multer = require('multer');
 
+// Les formats d'images
 const MINE_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
     'image/png': 'png'
 }
 
-//Configuration de multer
+// Configuration de multer
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, 'images')

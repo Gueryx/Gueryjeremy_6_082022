@@ -21,8 +21,11 @@ exports.createSauce = (req, res) => {
         usersLiked: [],
         usersDisliked: []
     });
+    // Enregistrement de l'utilisateur dans la base de donnée
     sauce.save()
+        // Réponse 201 : HTTP OK
         .then(sauce => res.status(201).json({ sauce }))
+        // Erreur 400 : Bad request
         .catch(error => res.status(400).json({ error }));
 };
 
@@ -44,6 +47,7 @@ exports.modifySauce = (req, res) => {
                 Sauce.updateOne({ _id: req.params.id }, {...sauceObject, _id: req.params.id })
                     .then(() => res.status(200).json({ message: 'Objet modifié.' }))
                     .catch(error => res.status(401).json({ error }));
+                // Erreur 401 : non autorisé 
             }
         })
         .catch(error => res.status(400).json({ error }));
@@ -66,6 +70,7 @@ exports.deleteSauce = (req, res) => {
             }
         })
         .catch(error => res.status(500).json({ error }));
+    // Erreur 500 : erreur serveur
 };
 
 // Un produit en particulier

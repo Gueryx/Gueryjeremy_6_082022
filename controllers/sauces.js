@@ -1,4 +1,8 @@
+// Importation du model "sauce"
 const Sauce = require('../models/Sauce');
+
+// “File System” Permet de créer, gérer ou supp' des fichiers pour stocker ou lire 
+// des fichiers dans un programme Node
 const fs = require('fs');
 
 // Creation d'un produit

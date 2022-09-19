@@ -1,3 +1,4 @@
+// Multer = package qui nous permet de gérer les fichiers entrants dans les requêtes HTTP
 // Connexion
 const multer = require('multer');
 
